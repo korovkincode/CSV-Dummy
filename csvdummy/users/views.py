@@ -19,6 +19,6 @@ def login(request):
 			return render(request, "users/logpage.html", {'errorpass': 'Password is incorrect. Try another'})
 		request.session['username'] = username
 		request.session['password'] = password
-		return redirect('/admin')
+		return redirect('/dashboard')
 	
 	return render(request, "users/logpage.html")
