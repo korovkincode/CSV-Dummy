@@ -1,0 +1,57 @@
+{% extends 'main/layout.html' %}
+
+{% block content %}
+
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'main/styleDash.css' %}">
+
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+    <a class="navbar-brand" href="">CSV-Dummmy</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/dashboard">Schemes</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link">Hello, <b>{{ username }}</b></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="schemes1">
+    <div style="display: flex; justify-content: space-between">
+        <h2 style="margin-bottom: 30px;">Data schemes</h2>
+        <a style="margin-top: 9px" href="/scheme/new"><button type="button" class="btn btn-success">New scheme</button></a>
+    </div>
+    <table class="table">
+    <thead>
+        <tr>
+        <th style="text-align: center;" scope="col">#</th>
+        <th style="text-align: center;" scope="col">Title</th>
+        <th class="modified-td" style="text-align: center;" scope="col">Modified</th>
+        <th style="text-align: center;" scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for scheme in schemes %}
+        <tr>
+            <th style="text-align: center;" scope="row">{{ scheme.scheme_id }}</th>
+            <td style="text-align: center;"><a href="/scheme/{{ scheme.scheme_id }}">{{ scheme.name }}</a></td>
+            <td class="modified-td" style="text-align: center;">{{ scheme.modified }}</td>
+            <td style="text-align: center;"><a href="/scheme/{{ scheme.scheme_id }}/edit">Edit scheme</a>&emsp;<a style="color: red" href="/scheme/{{ scheme.scheme_id }}/delete">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</div>
+{% endblock %}

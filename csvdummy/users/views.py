@@ -22,3 +22,11 @@ def login(request):
 		return redirect('/dashboard')
 	
 	return render(request, "users/logpage.html")
+
+def logout(request):
+	try:
+		del request.session['username']
+		del request.session['password']
+		return redirect('/login')
+	except:
+		return redirect('/login')

@@ -1,0 +1,30 @@
+.navbar {
+    color: #F7F7F9; 
+}
+.schemes1 {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 80%;
+    margin-top: 50px;
+}
+th, td {
+    border: 1px solid #DEE2E6;
+}
+@media screen and (max-width: 800px){
+    .schemes1 {
+        max-width: 100%;
+    }
+    .schemes2 {
+        margin-left: 0;
+    }
+}
+@media screen and (max-width: 300px){
+    .modified-td {
+        display: none;
+    }
+}
+.schemes2 {
+    max-width: 50%;
+    margin-left: 2%;
+    margin-top: 50px;
+}
