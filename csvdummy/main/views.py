@@ -18,3 +18,8 @@ def viewScheme(request, ID):
         context.append({'cur': cur, 'name': schemeColumn.name, 'type': schemeColumn.datatype})
         cur += 1
     return render(request, 'main/view-scheme.html', {'columns': context, 'scheme_name': curScheme.name, 'scheme_id': curScheme.scheme_id})
+
+def newScheme(request):
+    if request.method == 'POST':
+        print('there')
+    return render(request, 'main/scheme.html', {'username': request.session['username']})

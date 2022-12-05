@@ -1,0 +1,74 @@
+{% extends 'main/layout.html' %}
+
+{% block content %}
+
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'main/styleScheme.css' %}">
+
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+    <a class="navbar-brand" href="">CSV-Dummmy</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/dashboard">Schemes</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link">Hello, <b>{{ username }}</b></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="scheme">
+    <form method="POST">
+        {% csrf_token %}
+        <div style="display: flex; justify-content: space-between">
+            <h3 style="margin-bottom: 30px;">New scheme</h3>
+            <button style="height: 40px" type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        <h5 style="margin-bottom: 10px;">Name</h5>
+        <input style="width: 300px; margin-bottom: 40px;" name="schemeName" type="text" class="form-control" placeholder="Scheme Name">
+        <h3 style="margin-bottom: 40px">Scheme columns</h3>
+        <div class="columns">
+            <table class="table table-borderless">
+                <thead>
+                    <tr>
+                    <th style="border: none; text-align: center;">Сolumn name</th>
+                    <th style="border: none; text-align: center;">Column type</th>
+                    <th style="border: none; text-align: center;">Order</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="border: none; text-align: center;">
+                            <input name="columnName" type="text" class="form-control"">
+                        </td>
+                        <td style="border: none; text-align: center;">
+                            <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                                <option value="Full name">Full name</option>
+                                <option value="Job">Job</option>
+                                <option value="Domain name">Domain name</option>
+                                <option value="Company name">Company name</option>
+                                <option value="Address">Address</option>
+                            </select>
+                        </td>
+                        <td style="border: none; text-align: center;">
+                            <input name="order" type="number" value="0" min="0">
+                        </td>
+                    </tr>
+                </tbody>
+                </table>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
