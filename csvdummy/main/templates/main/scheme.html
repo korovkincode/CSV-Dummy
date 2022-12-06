@@ -36,21 +36,21 @@
             <button style="height: 40px" type="submit" class="btn btn-primary">Submit</button>
         </div>
         <h5 style="margin-bottom: 10px;">Name</h5>
-        <input style="width: 300px; margin-bottom: 40px;" name="schemeName" type="text" class="form-control" placeholder="Scheme Name">
+        <input style="width: 300px; margin-bottom: 40px;" name="schemeName" type="text" class="form-control" placeholder="Scheme Name" required>
         <h3 style="margin-bottom: 40px">Scheme columns</h3>
         <div class="columns">
-            <table class="table table-borderless">
+            <table id="table" class="table table-borderless">
                 <thead>
                     <tr>
-                    <th style="border: none; text-align: center;">Сolumn name</th>
-                    <th style="border: none; text-align: center;">Column type</th>
-                    <th style="border: none; text-align: center;">Order</th>
+                        <th style="border: none; text-align: center;">Сolumn name</th>
+                        <th style="border: none; text-align: center;">Column type</th>
+                        <th style="border: none; text-align: center;">Order</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td style="border: none; text-align: center;">
-                            <input name="columnName" type="text" class="form-control"">
+                            <input name="columnName" type="text" class="form-control">
                         </td>
                         <td style="border: none; text-align: center;">
                             <select class="form-select form-select-sm" aria-label=".form-select-sm example">
@@ -68,7 +68,110 @@
                 </tbody>
                 </table>
         </div>
+        <button onClick="add();" type="button" class="btn btn-primary">Add column</button>
+        
     </form>
 </div>
+
+<script>
+    function formSubmit() {
+        event.preventDefault();
+        if (document.getElementsByTagName('tr').length === 2) {
+            console.log('there');
+            let trEl = document.getElementsByTagName('tr')[1];
+            let errorEl = document.createElement('td');
+            errorEl.setAttribute(
+                'style',
+                'color: red; border: none; text-align: center;'
+            );
+            errorEl.setAttribute(
+                'class',
+                'error'
+            );
+            errorEl.innerHTML = "<h6>Create at least one column!</h6>";
+            trEl.appendChild(errorEl);
+        } else {
+            document.getElementsByTagName('form')[0].submit();
+        }
+    }
+    let form = document.getElementsByTagName('form')[0];
+    form.addEventListener("submit", formSubmit);
+    function check() {
+        let orders = Array();
+        for (errorEl of document.getElementsByClassName('error')) {
+            errorEl.setAttribute(
+                'style',
+                'display: none'
+            );
+        }
+        for (trEl of document.getElementsByTagName('tr')) {
+            if (trEl.getElementsByTagName('input')[1] === undefined) continue;
+            if (trEl.getElementsByTagName('input')[0].value === "") {
+                let errorEl = document.createElement('td');
+                errorEl.setAttribute(
+                    'style',
+                    'color: red; border: none; text-align: center;'
+                );
+                errorEl.setAttribute(
+                    'class',
+                    'error'
+                );
+                errorEl.innerHTML = "<h6>Column name can't be empty!</h6>";
+                trEl.appendChild(errorEl);
+                return 0;
+            } 
+            let curOrder = trEl.getElementsByTagName('input')[1].value;
+            if (orders.includes(curOrder)) {
+                let errorEl = document.createElement('td');
+                errorEl.setAttribute(
+                    'style',
+                    'color: red; border: none; text-align: center;'
+                );
+                errorEl.setAttribute(
+                    'class',
+                    'error'
+                );
+                errorEl.innerHTML = "<h6>Orders must be distinct numbers!</h6>";
+                trEl.appendChild(errorEl);
+                return 0;
+            }
+            orders.push(curOrder);
+        }
+        return 1;
+    }
+    function add() {
+        let checkV = check();
+        if (checkV === 0) return 0;
+        let newColumn = document.createElement('tr');
+        let tdEl = document.createElement('td');
+        tdEl.setAttribute(
+            'style',
+            'border: none; text-align: center;'
+        );
+        tdEl.innerHTML = "<input name='columnName' type='text' class='form-control'>";
+        document.getElementById('table').appendChild(newColumn);
+        newColumn.appendChild(tdEl);
+        tdEl = document.createElement('td');
+        tdEl.setAttribute(
+            'style',
+            'border: none; text-align: center;'
+        );
+        tdEl.innerHTML = '<select class="form-select form-select-sm" aria-label=".form-select-sm example">\
+                                <option value="Full name">Full name</option>\
+                                <option value="Job">Job</option>\
+                                <option value="Domain name">Domain name</option>\
+                                <option value="Company name">Company name</option>\
+                                <option value="Address">Address</option>\
+                            </select>';
+        newColumn.appendChild(tdEl);
+        tdEl = document.createElement('td');
+        tdEl.setAttribute(
+            'style',
+            'border: none; text-align: center;'
+        );
+        tdEl.innerHTML = '<input name="order" type="number" value="0" min="0">';
+        newColumn.appendChild(tdEl);
+    }
+</script>
 
 {% endblock %}
