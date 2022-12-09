@@ -45,7 +45,7 @@
     <tbody>
         {% for scheme in schemes %}
         <tr>
-            <th style="text-align: center;" scope="row">{{ scheme.scheme_id }}</th>
+            <th style="text-align: center;" scope="row">{{ scheme.scheme_num }}</th>
             <td style="text-align: center;"><a href="/scheme/{{ scheme.scheme_id }}">{{ scheme.name }}</a></td>
             <td class="modified-td" style="text-align: center;">{{ scheme.modified }}</td>
             <td style="text-align: center;"><a href="/scheme/{{ scheme.scheme_id }}/edit">Edit scheme</a>&emsp;<a style="color: red" href="/scheme/{{ scheme.scheme_id }}/delete">Delete</a></td>
