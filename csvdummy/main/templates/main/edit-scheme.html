@@ -36,7 +36,7 @@
             <button style="height: 40px" type="submit" class="btn btn-primary">Submit</button>
         </div>
         <h5 style="margin-bottom: 10px;">Name</h5>
-        <input style="width: 300px; margin-bottom: 40px;" name="schemeName" type="text" class="form-control" placeholder="Scheme Name" required>
+        <input style="width: 300px; margin-bottom: 40px;" value="{{ scheme_name }}" name="schemeName" type="text" class="form-control" placeholder="Scheme Name" required>
         <h3 style="margin-bottom: 40px">Scheme columns</h3>
         <div class="columns">
             <table id="table" class="table table-borderless">
@@ -48,6 +48,48 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for column in columns %}
+                    <tr>
+                        <td style="border: none; text-align: center;">
+                            <input value="{{ column.name }}" name="columnName" type="text" class="form-control">
+                        </td>
+                        <td style="border: none; text-align: center;">
+                            <select name="datatype" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                                {% if column.type == "Full name" %}
+                                    <option selected name="datatype" value="Full name">Full name</option>
+                                {% else %}
+                                    <option name="datatype" value="Full name">Full name</option>
+                                {% endif %}
+                                {% if column.type == "Job" %}
+                                    <option selected name="datatype" value="Job">Job</option>
+                                {% else %}
+                                    <option name="datatype" value="Job">Job</option>
+                                {% endif %}
+                                {% if column.type == "Domain name" %}
+                                    <option selected name="datatype" value="Domain name">Domain name</option>
+                                {% else %}
+                                    <option name="datatype" value="Domain name">Domain name</option>
+                                {% endif %}
+                                {% if column.type == "Company name" %}
+                                    <option selected name="datatype" value="Company name">Company name</option>
+                                {% else %}
+                                    <option name="datatype" value="Company name">Company name</option>
+                                {% endif %}
+                                {% if column.type == "Address" %}
+                                    <option selected name="datatype" value="Address">Address</option>
+                                {% else %}
+                                    <option name="datatype" value="Address">Address</option>
+                                {% endif %}
+                            </select>
+                        </td>
+                        <td style="border: none; text-align: center;">
+                            <input name="order" type="number" value="{{ column.cur }}" min="0">
+                        </td>
+                        <td style="border: none; text-align: center;">
+                            <button onclick="delRow(this)" style="background: none; border: none; color: red">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
                     <tr>
                         <td style="border: none; text-align: center;">
                             <input name="columnName" type="text" class="form-control">

@@ -5,4 +5,5 @@ urlpatterns = [
     path('dashboard/', views.dashboard),
     path('scheme/new/', views.newScheme),
     path('scheme/<int:ID>/', views.viewScheme),
+    path('scheme/<int:ID>/edit/', views.editScheme),
 ]
