@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="{% static 'main/styleDash.css' %}">
 
 <nav class="navbar navbar-expand-md navbar-light bg-light">
-    <a class="navbar-brand" href="">CSV-Dummmy</a>
+    <a class="navbar-brand" href=""><b>CSV-Dummmy</b></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -33,7 +33,7 @@
         <h4 style="margin-bottom: 30px;">{{ scheme_name }}</h4>
         <a style="margin-top: 9px" href="/scheme/{{ scheme_id }}/edit">Edit scheme</a>
     </div>
-    <table class="table">
+    <table class="table" style="margin-bottom: 30px">
     <thead>
         <tr>
         <th style="text-align: center;" scope="col">#</th>
@@ -51,5 +51,53 @@
         {% endfor %}
     </tbody>
     </table>
+    <div style="display: flex; justify-content: space-between">
+        <h4 style="margin-bottom: 30px;">Datasets</h4>
+        <div style="display: flex">
+            <span style="margin-top: 7px;">Rows:</span> &emsp; <input required style="width: 80px; height: 40px" id="rows" name="rows" type="number" min="0" class="form-control">
+            <button style="margin-left: 20px; height: 40px" onClick="generate();" type="submit" class="btn btn-success">Generate data</button>
+        </div>
+    </div>
+    <table class="table" style="margin-bottom: 30px">
+        <thead>
+            <tr>
+            <th style="text-align: center;" scope="col">#</th>
+            <th style="text-align: center;" scope="col">Created</th>
+            <th style="text-align: center;" scope="col">Column type</th>
+            <th style="text-align: center;" scope="col">Column type</th>
+            </tr>
+        </thead>
+    <tbody>
+        {% for dataset in datasets %}
+        <tr>
+            <th style="text-align: center;" scope="row">{{ dataset.cur }}</th>
+            <td style="text-align: center;">{{ dataset.created }}</td>
+            <td style="text-align: center;">Ready</td>
+            <td style="text-align: center;"><a>Download</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
 </div>
+
+
+<script>
+    function generate() {
+        let table = document.getElementsByTagName('table')[1];
+        let trEl = document.createElement('tr');
+        $.ajax(
+        {
+            type:"GET",
+            url: "/scheme/{{ scheme_id }}/",
+            data: {
+                rows: document.getElementById("rows").value
+            },
+            success: function(data) 
+            {
+                alert('bebra');
+            }
+        })
+    }
+</script>
+
 {% endblock %}
