@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
-from .models import DataScheme, DataSchemeColumn
+from django.http import HttpResponse
+from .models import DataScheme, DataSchemeColumn, DataSet
 from users.models import Users
+from datetime import datetime
+from time import sleep
 import csv
 
 def is_ajax(request):
@@ -23,7 +26,10 @@ def viewScheme(request, ID):
         return redirect('/login')
     if is_ajax(request):
         rows = int(request.GET.get('rows', None))
+        sleep(2)
         if rows is not None:
+            dataset = DataSet(filename=f'scheme_{ID}-rows_{rows}.csv', datascheme=DataScheme.objects.get(scheme_id=ID))
+            dataset.save()
             headers = [x.name for x in DataSchemeColumn.objects.filter(datascheme=DataScheme.objects.get(scheme_id=ID))]
             datatypes = [x.datatype for x in DataSchemeColumn.objects.filter(datascheme=DataScheme.objects.get(scheme_id=ID))]
             with open(f'datasets\scheme_{ID}-rows_{rows}.csv', 'w', newline='') as file:
@@ -43,14 +49,20 @@ def viewScheme(request, ID):
                         if datatype == 'Address':
                             row.append('Funchal, Portugal')
                     csvw.writerow(row)
+        return HttpResponse('ok')
     else:
         curScheme = DataScheme.objects.get(scheme_id=ID)
-        context = []
+        columns = []
+        datasets = []
         cur = 1
         for schemeColumn in list(DataSchemeColumn.objects.filter(datascheme=curScheme)):
-            context.append({'cur': cur, 'name': schemeColumn.name, 'type': schemeColumn.datatype})
+            columns.append({'cur': cur, 'name': schemeColumn.name, 'type': schemeColumn.datatype})
             cur += 1
-        return render(request, 'main/view-scheme.html', {'username': request.session['username'], 'columns': context, 'scheme_name': curScheme.name, 'scheme_id': curScheme.scheme_id})
+        cur = 1
+        for dataset in list(DataSet.objects.filter(datascheme=curScheme)):
+            datasets.append({'cur': cur, 'filename': dataset.filename, 'modified': dataset.modified.strftime('%Y-%m-%d')})
+            cur += 1
+        return render(request, 'main/view-scheme.html', {'now': datetime.now().strftime('%Y-%m-%d'), 'username': request.session['username'], 'columns': columns, 'datasets': datasets, 'scheme_name': curScheme.name, 'scheme_id': curScheme.scheme_id})
 
 def newScheme(request):
     if request.session.get('username', 0) == 0:

@@ -71,9 +71,11 @@
         {% for dataset in datasets %}
         <tr>
             <th style="text-align: center;" scope="row">{{ dataset.cur }}</th>
-            <td style="text-align: center;">{{ dataset.created }}</td>
-            <td style="text-align: center;">Ready</td>
-            <td style="text-align: center;"><a>Download</a></td>
+            <td style="text-align: center;">{{ dataset.modified }}</td>
+            <td style="text-align: center;">
+                Ready
+            </td>
+            <td style="text-align: center;"><a href="">Download</a></td>
         </tr>
         {% endfor %}
     </tbody>
@@ -85,6 +87,18 @@
     function generate() {
         let table = document.getElementsByTagName('table')[1];
         let trEl = document.createElement('tr');
+        let cur = 0;
+        if (table.getElementsByTagName('tr').length === 1) cur = 1;
+        else cur = parseInt(table.getElementsByTagName('tr')[table.getElementsByTagName('tr').length - 1].getElementsByTagName('th')[0].innerText) + 1;
+        trEl.innerHTML = `
+        <th style="text-align: center;" scope="row">${cur}</th>
+            <td style="text-align: center;">{{ now }}</td>
+            <td style="text-align: center;">
+                Processing
+            </td>
+            <td style="text-align: center;"></td>
+        `;
+        table.appendChild(trEl);
         $.ajax(
         {
             type:"GET",
@@ -94,7 +108,8 @@
             },
             success: function(data) 
             {
-                alert('bebra');
+                table.getElementsByTagName('tr')[table.getElementsByTagName('tr').length - 1].getElementsByTagName('td')[1].innerHTML = 'Ready';
+                table.getElementsByTagName('tr')[table.getElementsByTagName('tr').length - 1].getElementsByTagName('td')[2].innerHTML = '<a href="">Download</a>';
             }
         })
     }

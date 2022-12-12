@@ -10,6 +10,9 @@
 th, td {
     border: 1px solid #DEE2E6;
 }
+a:hover {
+    text-decoration: none;
+}
 @media screen and (max-width: 800px){
     .schemes1 {
         max-width: 100%;

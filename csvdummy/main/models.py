@@ -19,3 +19,11 @@ class DataSchemeColumn(models.Model):
 
     def __str__(self):
         return self.name
+
+class DataSet(models.Model):
+    modified = models.DateTimeField(auto_now_add=True)
+    datascheme = models.ForeignKey(DataScheme, on_delete=models.CASCADE)
+    filename = models.CharField(max_length=300)
+
+    def __str__(self):
+        return self.filename
