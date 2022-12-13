@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
 from .models import DataScheme, DataSchemeColumn, DataSet
 from users.models import Users
 from datetime import datetime
@@ -49,7 +49,7 @@ def viewScheme(request, ID):
                         if datatype == 'Address':
                             row.append('Funchal, Portugal')
                     csvw.writerow(row)
-        return HttpResponse('ok')
+        return HttpResponse(f'scheme_{ID}-rows_{rows}.csv')
     else:
         curScheme = DataScheme.objects.get(scheme_id=ID)
         columns = []

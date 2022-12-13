@@ -75,7 +75,7 @@
             <td style="text-align: center;">
                 Ready
             </td>
-            <td style="text-align: center;"><a href="">Download</a></td>
+            <td style="text-align: center;"><a href="{% static dataset.filename %}" download>Download</a></td>
         </tr>
         {% endfor %}
     </tbody>
@@ -108,8 +108,9 @@
             },
             success: function(data) 
             {
+                console.log(data);
                 table.getElementsByTagName('tr')[table.getElementsByTagName('tr').length - 1].getElementsByTagName('td')[1].innerHTML = 'Ready';
-                table.getElementsByTagName('tr')[table.getElementsByTagName('tr').length - 1].getElementsByTagName('td')[2].innerHTML = '<a href="">Download</a>';
+                table.getElementsByTagName('tr')[table.getElementsByTagName('tr').length - 1].getElementsByTagName('td')[2].innerHTML = `<a href="/static/${data}/" download>Download</a>`;
             }
         })
     }
