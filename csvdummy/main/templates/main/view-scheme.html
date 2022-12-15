@@ -73,7 +73,7 @@
             <th style="text-align: center;" scope="row">{{ dataset.cur }}</th>
             <td style="text-align: center;">{{ dataset.modified }}</td>
             <td style="text-align: center;">
-                Ready
+                <span class="badge badge-pill badge-success">Ready</span>
             </td>
             <td style="text-align: center;"><a href="{% static dataset.filename %}" download>Download</a></td>
         </tr>
@@ -94,7 +94,7 @@
         <th style="text-align: center;" scope="row">${cur}</th>
             <td style="text-align: center;">{{ now }}</td>
             <td style="text-align: center;">
-                Processing
+                <span class="badge badge-pill badge-secondary">Processing</span>
             </td>
             <td style="text-align: center;"></td>
         `;
@@ -109,7 +109,7 @@
             success: function(data) 
             {
                 console.log(data);
-                table.getElementsByTagName('tr')[table.getElementsByTagName('tr').length - 1].getElementsByTagName('td')[1].innerHTML = 'Ready';
+                table.getElementsByTagName('tr')[table.getElementsByTagName('tr').length - 1].getElementsByTagName('td')[1].innerHTML = '<span class="badge badge-pill badge-success">Ready</span>';
                 table.getElementsByTagName('tr')[table.getElementsByTagName('tr').length - 1].getElementsByTagName('td')[2].innerHTML = `<a href="/static/${data}/" download>Download</a>`;
             }
         })
