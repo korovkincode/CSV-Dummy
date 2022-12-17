@@ -4,7 +4,10 @@ from .models import DataScheme, DataSchemeColumn, DataSet
 from users.models import Users
 from datetime import datetime
 from time import sleep
+from faker import Faker
 import csv
+
+faker = Faker()
 
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
@@ -39,15 +42,15 @@ def viewScheme(request, ID):
                     row = []
                     for datatype in datatypes:
                         if datatype == 'Full name':
-                            row.append('Cristiano Ronaldo')
+                            row.append(faker.name())
                         if datatype == 'Job':
-                            row.append('Footballer')
+                            row.append(faker.job())
                         if datatype == 'Domain name':
-                            row.append('52.84.174.52')
+                            row.append(faker.domain_name())
                         if datatype == 'Company name':
-                            row.append('CR7')
+                            row.append(faker.company())
                         if datatype == 'Address':
-                            row.append('Funchal, Portugal')
+                            row.append(faker.address())
                     csvw.writerow(row)
         return HttpResponse(f'scheme_{ID}-rows_{rows}.csv')
     else:
