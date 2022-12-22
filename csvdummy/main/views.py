@@ -102,3 +102,10 @@ def editScheme(request, ID):
         column = DataSchemeColumn(name=columnT[0], datatype=columnT[1], datascheme=scheme)
         column.save()
     return redirect('/dashboard')
+
+def deleteScheme(request, ID):
+    if request.session.get('username', 0) == 0:
+        return redirect('/login')
+    scheme = DataScheme.objects.get(scheme_id=ID)
+    scheme.delete()
+    return redirect('/dashboard')
