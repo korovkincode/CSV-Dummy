@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import Users
+from django.http import HttpRequest, HttpResponse
 
-def login(request):
+def login(request: HttpRequest) -> HttpResponse:
 	if request.method == 'POST':
 		username = request.POST.get('username', '')
 		password = request.POST.get('password', '')
@@ -23,7 +24,7 @@ def login(request):
 	
 	return render(request, "users/logpage.html")
 
-def logout(request):
+def logout(request: HttpRequest) -> HttpResponse:
 	try:
 		del request.session['username']
 		del request.session['password']
