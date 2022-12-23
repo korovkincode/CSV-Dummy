@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, FileResponse
 from .models import DataScheme, DataSchemeColumn, DataSet
 from users.models import Users
@@ -15,7 +15,7 @@ def is_ajax(request):
 def dashboard(request):
     if request.session.get('username', 0) == 0:
         return redirect('/login')
-    curUser = Users.objects.get(username=request.session['username'])
+    curUser = get_object_or_404(Users, username=request.session['username'])
     schemes = list(DataScheme.objects.filter(user=curUser))
     context = []
     num = 1
@@ -31,10 +31,10 @@ def viewScheme(request, ID):
         rows = int(request.GET.get('rows', None))
         sleep(2)
         if rows is not None:
-            dataset = DataSet(filename=f'scheme_{ID}-rows_{rows}.csv', datascheme=DataScheme.objects.get(scheme_id=ID))
+            dataset = DataSet(filename=f'scheme_{ID}-rows_{rows}.csv', datascheme=get_object_or_404(DataScheme, scheme_id=ID))
             dataset.save()
-            headers = [x.name for x in DataSchemeColumn.objects.filter(datascheme=DataScheme.objects.get(scheme_id=ID))]
-            datatypes = [x.datatype for x in DataSchemeColumn.objects.filter(datascheme=DataScheme.objects.get(scheme_id=ID))]
+            headers = [x.name for x in DataSchemeColumn.objects.filter(datascheme=get_object_or_404(DataScheme, scheme_id=ID))]
+            datatypes = [x.datatype for x in DataSchemeColumn.objects.filter(datascheme=get_object_or_404(DataScheme, scheme_id=ID))]
             with open(f'datasets\scheme_{ID}-rows_{rows}.csv', 'w', newline='') as file:
                 csvw = csv.writer(file)
                 csvw.writerow(headers)
@@ -54,7 +54,7 @@ def viewScheme(request, ID):
                     csvw.writerow(row)
         return HttpResponse(f'scheme_{ID}-rows_{rows}.csv')
     else:
-        curScheme = DataScheme.objects.get(scheme_id=ID)
+        curScheme = get_object_or_404(DataScheme, scheme_id=ID)
         columns = []
         datasets = []
         cur = 1
@@ -71,7 +71,7 @@ def newScheme(request):
     if request.session.get('username', 0) == 0:
         return redirect('/login')
     if request.method == 'POST':
-        curUser = Users.objects.get(username=request.session['username'])
+        curUser = get_object_or_404(Users, username=request.session['username'])
         scheme = DataScheme(name=request.POST['schemeName'], user=curUser)
         scheme.save()
         allColumns = list(zip(request.POST.getlist('columnName')[:-1], request.POST.getlist('datatype')[:-1], request.POST.getlist('order')[:-1]))
@@ -85,7 +85,7 @@ def newScheme(request):
 def editScheme(request, ID):
     if request.session.get('username', 0) == 0:
         return redirect('/login')
-    scheme = DataScheme.objects.get(scheme_id=ID)
+    scheme = get_object_or_404(DataScheme, scheme_id=ID)
     if request.method == 'GET':
         context = []
         cur = 0
@@ -95,7 +95,6 @@ def editScheme(request, ID):
         return render(request, 'main/edit-scheme.html', {'columns': context, 'scheme_name': scheme.name, 'scheme_id': scheme.scheme_id, 'username': request.session['username']})
     
     DataSchemeColumn.objects.filter(datascheme=scheme).delete()
-    curUser = Users.objects.get(username=request.session['username'])
     allColumns = list(zip(request.POST.getlist('columnName')[:-1], request.POST.getlist('datatype')[:-1], request.POST.getlist('order')[:-1]))
     allColumns.sort(key = lambda el: int(el[2]))
     for columnT in allColumns:
@@ -106,6 +105,6 @@ def editScheme(request, ID):
 def deleteScheme(request, ID):
     if request.session.get('username', 0) == 0:
         return redirect('/login')
-    scheme = DataScheme.objects.get(scheme_id=ID)
+    scheme = get_object_or_404(DataScheme, scheme_id=ID)
     scheme.delete()
     return redirect('/dashboard')
