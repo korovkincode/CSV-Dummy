@@ -106,6 +106,8 @@ def editScheme(request: HttpRequest, ID: int) -> HttpResponse:
 def deleteScheme(request: HttpRequest, ID: int) -> HttpResponse:
 	if request.session.get('username', 0) == 0:
 		return redirect('/login')
-	scheme = get_object_or_404(DataScheme, scheme_id=ID)
-	scheme.delete()
+	if is_ajax(request):
+		scheme = get_object_or_404(DataScheme, scheme_id=ID)
+		scheme.delete()
+		return HttpResponse('200!')
 	return redirect('/dashboard')

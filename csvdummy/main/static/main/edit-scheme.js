@@ -63,7 +63,7 @@ function check() {
     return 1;
 }
 const delRow = (el) => {
-    el.parentElement.parentElement.remove()
+    el.parentElement.parentElement.remove();
 }
 function add() {
     let checkV = check();
