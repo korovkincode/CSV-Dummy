@@ -48,10 +48,13 @@
             <th style="text-align: center;" scope="row">{{ scheme.scheme_num }}</th>
             <td style="text-align: center;"><a href="/scheme/{{ scheme.scheme_id }}">{{ scheme.name }}</a></td>
             <td class="modified-td" style="text-align: center;">{{ scheme.modified }}</td>
-            <td style="text-align: center;"><a href="/scheme/{{ scheme.scheme_id }}/edit">Edit scheme</a>&emsp;<a style="color: red" href="/scheme/{{ scheme.scheme_id }}/delete">Delete</a></td>
+            <td style="text-align: center;"><a href="/scheme/{{ scheme.scheme_id }}/edit">Edit scheme</a>&emsp;<span onclick="delScheme(this);" style="color: red; cursor: pointer;">Delete</span></td>
         </tr>
         {% endfor %}
     </tbody>
     </table>
 </div>
+
+<script src="{% static 'main/dashboard.js' %}"></script>
+
 {% endblock %}
