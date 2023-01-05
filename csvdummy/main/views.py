@@ -103,7 +103,7 @@ def editScheme(request: HttpRequest, ID: int) -> HttpResponse:
 		column.save()
 	return redirect('/dashboard')
 
-def deleteScheme(request: HttpRequest, ID: int):
+def deleteScheme(request: HttpRequest, ID: int) -> HttpResponse:
 	if request.session.get('username', 0) == 0:
 		return redirect('/login')
 	scheme = get_object_or_404(DataScheme, scheme_id=ID)
