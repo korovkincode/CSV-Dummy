@@ -1,5 +1,5 @@
 <h1>CSV-Dummy</h1>
-<h3>CSV-Dummy is an online service for generating CSV files with fake data using Python and Django</h3>
+<h3>CSV-Dummy is an online service for generating CSV files with fake data</h3>
 <h4>Features:</h4>
 <ul>
 <li>Any logged-in user can create any number of data schemas to create
